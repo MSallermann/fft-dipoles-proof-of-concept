@@ -9,6 +9,6 @@ N = [5,5,1]
 lattice = util.setUpLattice(np.array([bv1, bv2, bv3]), N)
 spins=(util.buildSpins(lattice))
 
-print(lattice)
-print(spins)
-print(util.dipoleMatrix([1,5,6]))
+np.matmul(bv1,bv2)
+#gradients = util.calculateGradientsBF(lattice, spins)
+#print(gradients)

@@ -16,7 +16,7 @@ def buildSpins(lattice, config = "Random"):
         x = np.cos(phi*2*np.pi)*np.sin(theta*2*np.pi)
         y = np.sin(phi*2*np.pi)*np.sin(theta*2*np.pi)
         z = np.cos(theta*2*np.pi)
-        result = np.dstack((x,y,z))
+        result = np.dstack((x,y,z)).reshape(len(lattice), 3)
     return result
 
 def dipoleMatrix(r_vect):
@@ -24,7 +24,6 @@ def dipoleMatrix(r_vect):
     y = r_vect[1]
     z = r_vect[2]
     r = np.sqrt(r_vect[0]**2 + r_vect[1]**2 + r_vect[2]**2)
-
     result = 1/r**5*np.array(
                                 [[x**2 - r**2, x*y, x*z],
                                 [x*y, y**2-r**2, y*z],
@@ -33,4 +32,23 @@ def dipoleMatrix(r_vect):
     return result
 
 
+def getDMatrices(lattice):
+    pass
+
+def calculateGradientsBF(lattice, spins):
+    gradients = np.zeros(spins.shape)
+    for k in range(len(lattice)):
+        grad = np.zeros(3)
+        for j in range(len(lattice)):
+            if(j==k):
+                continue
+            D = dipoleMatrix(lattice[k]-lattice[j])
+            grad += - np.matmul(D, spins[j])
+        gradients[k] = grad
+    return gradients
+
+
+    result = np.zeros(spins.shape)
+    np.matmul(D, spins)
+    pass
 
