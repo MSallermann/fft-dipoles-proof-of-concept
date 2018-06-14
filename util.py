@@ -20,15 +20,19 @@ def buildSpins(lattice, config = "Random"):
     return result
 
 def dipoleMatrix(r_vect):
-    x = r_vect[0]
-    y = r_vect[1]
-    z = r_vect[2]
-    r = np.sqrt(r_vect[0]**2 + r_vect[1]**2 + r_vect[2]**2)
-    result = 1/r**5*np.array(
-                                [[x**2 - r**2, x*y, x*z],
-                                [x*y, y**2-r**2, y*z],
-                                [x*z, y*z, z**2-r**2]]
-                            )
+    if r_vect[0]**2+r_vect[1]**2+r_vect[2]**2 > 1e-9:
+        x = r_vect[0]
+        y = r_vect[1]
+        z = r_vect[2]
+        r = np.sqrt(r_vect[0]**2 + r_vect[1]**2 + r_vect[2]**2)
+        result = 1/r**5*np.array(
+                                    [[x**2 - r**2, x*y, x*z],
+                                    [x*y, y**2-r**2, y*z],
+                                    [x*z, y*z, z**2-r**2]]
+                                )
+    else:
+        result = np.zeros(9).reshape(3,3)
+
     return result
 
 
