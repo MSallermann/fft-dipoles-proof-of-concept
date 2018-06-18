@@ -44,7 +44,8 @@ bv = np.array(  [[1,0,0],
                  [0,0,1]]
              )
 basis = np.array([[0,0,0], [0.2,0.3,0]])
-N = [2,2,2]
+N = [3,1,1]
+B = len(basis)
 
 #Set up a system
 pos = util.setUpLattice(bv, N, basis)
@@ -75,26 +76,40 @@ for ib,b in enumerate(basis):
     m_pad.append(mt)
 
 #Build padded DMatrices
-D_pad = []
-for b in basis:
-    Dt = np.ones(9*Npadding).reshape((Npadding,3,3))
-    for c in range(it_c):
-        for b in range(it_b):
-            for a in range(it_a):
-                c_idx = c if c<N[2] else c + 1 - 2 * N[2]
-                b_idx = b if b<N[1] else b + 1 - 2 * N[1]
-                a_idx = a if a<N[0] else a + 1 - 2 * N[0]
-                #print("adf",a_idx,b_idx,c_idx)
-               Dt[a + it_a * b + it_b * it_c *c] = util.dipoleMatrix(a_idx*bv[0] + b_idx*bv[1] + c_idx*bv[2] + b)
-    D_pad.append(Dt)
+D_pad = np.zeros((B,B,Npadding,3,3))
+for i1,b1 in enumerate(basis):
+    for i2,b2 in enumerate(basis):
+        for c in range(it_c):
+            for b in range(it_b):
+                for a in range(it_a):
+                    c_idx = - c if c<N[2] else 2 * N[2] - 1 - c
+                    b_idx = - b if b<N[1] else 2 * N[1] - 1 - b
+                    a_idx = - a if a<N[0] else 2 * N[0] - 1 - a
+                    #print("adf",a_idx,b_idx,c_idx)
+                    D_pad[i1, i2, a + it_a * b + it_b * it_c *c] = util.dipoleMatrix(a_idx*bv[0] + b_idx*bv[1] + c_idx*bv[2] + b1 - b2)
 
-#Calculate the convolutions directly
 
-for Dt,mt in zip(D_pad, m_pad):
-    mt_np = util.convertToNumpyStyle(mt, [it_a, it_b, it_c])
-    Dt_np = util.convertToNumpyStyle(Dt, [it_a, it_b, it_c])
-    conv = mathematics.convolute3DVecMatrix(Dt_np, mt_np)
+#----------------------------------------------------------------------
+# Calculate the convolutions directly (without conv. theorem)
+#----------------------------------------------------------------------
+
+conv_sublattices = []
+for i in range(B):
+    conv = np.zeros((it_a, it_b, it_c, 3))
+    for j in range(B):
+        Dt = D_pad[i,j]
+        mt = m_pad[j]
+        mt_np = util.convertToNumpyStyle(mt, [it_a, it_b, it_c])
+        Dt_np = util.convertToNumpyStyle(Dt, [it_a, it_b, it_c])
+        conv += mathematics.convolute3DVecMatrix(Dt_np, mt_np)
     conv = util.convertToSpiritStyle(conv)
+    conv_sublattices.append(conv)
+conv_sublattices = np.array(conv_sublattices)
+
+print(conv_sublattices.shape)
+conv = util.joinSublattices(conv_sublattices, [it_a, it_b, it_c])
+
+
 
 '''
 #Calculate the multi-dim FT with numpy
@@ -114,18 +129,22 @@ for c in range(it_c):
 result = np.fft.ifftn(res, axes=[0,1,2])
 res_final = -1 * util.convertToSpiritStyle(result)
 
+'''
+
 #-----------------------------------
 # Write some results to file
 #-----------------------------------
 
 with open(outputfile,"w") as f:
     np.set_printoptions(precision=3)
+    
     f.write( "#-------------------------------------\n")
     f.write( "#            Geometry                 \n")
     f.write( "#-------------------------------------\n")
     f.write("Bravais Lattice: \n" + str(bv) + "\n")
     f.write("N = " + str(N) + "\n")
     f.write("Basis: \n" + str(basis) + "\n")
+    '''
     f.write( "\n#-------------------------------------\n")
     f.write(   "#       Quantities           \n")
     f.write(   "#-------------------------------------\n")
@@ -134,6 +153,7 @@ with open(outputfile,"w") as f:
     f.write("Fourier Transformed padded magnetization: \n" + str(fmt)+ "\n")
     f.write("Padded D-Matrices \n" + str(Dt)+ "\n")
     f.write("Fourier transformed padded D-Matrices \n" + str(fDt) + "\n")
+    '''
     f.write("\n#-------------------------------------\n")
     f.write(  "#            Direct Conv.             \n")
     f.write(  "#-------------------------------------\n")
@@ -142,8 +162,9 @@ with open(outputfile,"w") as f:
     f.write(   "#               Results               \n")
     f.write(   "#-------------------------------------\n")
     f.write("Brute Force Gradients: \n"+ str(gradBF) + "\n")
+    '''
     f.write("With convolution Theorem: \n")
     f.write(str(res_final))
-'''
+    '''
 
 
