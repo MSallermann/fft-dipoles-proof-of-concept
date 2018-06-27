@@ -43,9 +43,9 @@ Dt = np.ones(9*Npadding).reshape((Npadding,3,3))
 for c in range(it_c):
     for b in range(it_b):
         for a in range(it_a):
-            c_idx = c if c<N[2] else c + 1 - 2 * N[2]
-            b_idx = b if b<N[1] else b + 1 - 2 * N[1]
-            a_idx = a if a<N[0] else a + 1 - 2 * N[0]
+            c_idx = -c if c<N[2] else 2 * N[2] - 1 - c
+            b_idx = -b if b<N[1] else 2 * N[1] - 1 - b
+            a_idx = -a if a<N[0] else 2 * N[0] - 1 - a 
             #print("adf",a_idx,b_idx,c_idx)
             Dt[a + it_a * b + it_b * it_c *c] = util.dipoleMatrix(a_idx*bv[0] + b_idx*bv[1] + c_idx*bv[2])
 
