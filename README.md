@@ -3,7 +3,7 @@ Proof-of-concept implementation of an FFT-algorithm
 to calculate gradients due to magnetic dipole-dipole interactions
 on a bravais lattice with basis and open boundary conditions.
 
-Only tested on python 3.6.5.
+Only tested on python 3.6.5. Also requires numpy 1.10.
 
 
 DISCLAIMER: This is not intended to be a reference implementation and 

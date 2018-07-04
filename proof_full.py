@@ -123,7 +123,7 @@ conv_ft = np.array(conv_ft)
 
 
 #piece together gradients on the different sublattices to compare to BF result
-res_final = np.zeros((N[0] * N[1] * N[2] * B,3))
+res_final = np.zeros((N[0] * N[1] * N[2] * B,3), dtype = complex)
 for a in range(N[0]):
     for b in range(N[1]):
         for c in range(N[2]):
