@@ -12,9 +12,8 @@ DISCLAIMER: This is not intended to be a reference implementation and
             The only purpose of this code is to show that the basic
             math and logic of the algorithm works correctly.
 
--------------------------------------------------------------------------
-    USE
--------------------------------------------------------------------------
+
+## USE
 
     Modify the beginning of proof_full.py to setup a geometry or use
     standard values
@@ -29,9 +28,7 @@ DISCLAIMER: This is not intended to be a reference implementation and
     Dont bother with the special cases folder, the code in there will 
     likely not work anymore.
 
--------------------------------------------------------------------------
-   BRIEF DESCRIPTION OF ALGORITHM
--------------------------------------------------------------------------
+## BRIEF DESCRIPTION OF ALGORITHM
 
    Let B be the number of atoms per basis cell
 
@@ -44,4 +41,3 @@ DISCLAIMER: This is not intended to be a reference implementation and
        convolution of the padded sets is equal to the correct physical
        calculation (with respect to the boundary condition)
    4.  Perform the convolutions via the convolution theorem and add them
-------------------------------------------------------------------------
