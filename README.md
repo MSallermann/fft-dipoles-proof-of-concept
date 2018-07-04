@@ -1,18 +1,31 @@
 # fft-dipoles-proof-of-concept
 A proof of concept attempt for the implementation of the fft algorithm to calculate magneto static dipole-dipole interactions. Using numpy.
 
--------------------------------------------------------------------------
-   BRIEF DESCRIPTION
+DISCLAIMER: This is not intended to be a reference implementation and 
+            it is likely to be very slow. It doesnt try to optimize
+            the implementation in any way.
+            The only purpose of this code is to show that the basic
+            math and logic of the algorithm works correctly.
 
+-------------------------------------------------------------------------
+    USE
+-------------------------------------------------------------------------
+    Modify the beginning of proof_full.py to setup a geometry or use
+    standard values
+
+    Then:
+        > python proof_full.py
+
+    Output is in Output/output_full.txt by default.
+    Scroll to the end of outputfile to find comparison between Brute Force
+    and this algorithm.
+
+-------------------------------------------------------------------------
+   BRIEF DESCRIPTION OF ALGORITHM
+-------------------------------------------------------------------------
    Proof-of-concept implementation of an FFT-algorithm
    to calculate gradients due to magnetic dipole-dipole interactions
    on a bravais lattice with basis and open boundary conditions
-   
-   DISCLAIMER: This is not intended to be a reference implementation and 
-               it is likely to be very slow.
-               The only purpose of this code is to show that the basic
-               math and logic of the algorithm works correctly.
-
 
    Let B be the number of atoms per basis cell
 
