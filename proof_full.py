@@ -55,7 +55,7 @@ for ib,b in enumerate(basis):
     for c in range(N[2]):
         for b in range(N[1]):
             for a in range(N[0]):
-                mt[a + it_a*b + it_a*it_b*c] = spins[a*B + N[0]*B*b + N[0]*N[1]*B*c + ib]
+                mt[a + it_a * b + it_a * it_b * c] = spins[a * B + N[0] * B * b + N[0] * N[1] * B * c + ib]
     m_pad.append(mt)
 
 #Build padded DMatrices
@@ -68,7 +68,7 @@ for i1,b1 in enumerate(basis):
                     c_idx = - c if c<N[2] else it_c - c
                     b_idx = - b if b<N[1] else it_b - b
                     a_idx = - a if a<N[0] else it_a - a
-                    D_pad[i1, i2, a + it_a * b + it_a * it_b * c] = util.dipoleMatrix(a_idx*bv[0] + b_idx*bv[1] + c_idx*bv[2] + b2 - b1)
+                    D_pad[i1, i2, a + it_a * b + it_a * it_b * c] = util.dipoleMatrix(a_idx * bv[0] + b_idx * bv[1] + c_idx * bv[2] + b2 - b1)
 
 
 #----------------------------------------------------------------------
