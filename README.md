@@ -15,8 +15,7 @@ DISCLAIMER: This is not intended to be a reference implementation and
 
 ## USE
 
-    Modify the beginning of proof_full.py to setup a geometry or use
-    standard values
+    Modify the beginning of proof_full.py to setup a geometry or use the standard values
 
     Then:
         > python proof_full.py
@@ -25,8 +24,7 @@ DISCLAIMER: This is not intended to be a reference implementation and
     Scroll to the end of outputfile to find comparison between Brute Force
     and this algorithm.
 
-    Dont bother with the special cases folder, the code in there will 
-    likely not work anymore.
+    Dont bother with the special cases folder, the code in there will likely not work anymore.
 
 ## BRIEF DESCRIPTION OF ALGORITHM
 

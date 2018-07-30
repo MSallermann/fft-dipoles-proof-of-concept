@@ -42,9 +42,9 @@ def dipoleMatrix(r_vect):
         z = r_vect[2]
         r = np.sqrt(r_vect[0]**2 + r_vect[1]**2 + r_vect[2]**2)
         result = (1/r**5) * np.array(
-                                    [[x**2 - r**2, x*y, x*z],
-                                     [x*y, y**2-r**2, y*z],
-                                     [x*z, y*z, z**2-r**2]]
+                                    [[3 * x**2 - r**2, 3 * x * y, 3 * x * z],
+                                     [3 * x * y, 3 * y**2 - r**2, 3 * y * z],
+                                     [3 * x * z, 3 * y*  z, 3 * z**2 - r**2]]
                                 )
     else:
         result = np.zeros(9).reshape(3,3)
