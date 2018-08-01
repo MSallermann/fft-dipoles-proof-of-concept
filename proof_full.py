@@ -65,10 +65,10 @@ for i1,b1 in enumerate(basis):
         for c in range(it_c):
             for b in range(it_b):
                 for a in range(it_a):
-                    c_idx = - c if c<N[2] else it_c - c
-                    b_idx = - b if b<N[1] else it_b - b
-                    a_idx = - a if a<N[0] else it_a - a
-                    D_pad[i1, i2, a + it_a * b + it_a * it_b * c] = util.dipoleMatrix(a_idx * bv[0] + b_idx * bv[1] + c_idx * bv[2] + b2 - b1)
+                    c_idx = c if c<N[2] else c - it_c
+                    b_idx = b if b<N[1] else b - it_b
+                    a_idx = a if a<N[0] else a - it_a 
+                    D_pad[i1, i2, a + it_a * b + it_a * it_b * c] = util.dipoleMatrix(a_idx * bv[0] + b_idx * bv[1] + c_idx * bv[2] + b1 - b2)
 
 
 #----------------------------------------------------------------------
