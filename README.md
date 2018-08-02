@@ -21,8 +21,7 @@ DISCLAIMER: This is not intended to be a reference implementation and
         > python proof_full.py
 
     Output is in Output/output_full.txt by default.
-    Scroll to the end of outputfile to find comparison between Brute Force
-    and this algorithm.
+    Comparison between Brute Force and this algorithm is at the beginning of the output file.
 
     Dont bother with the special cases folder, the code in there will likely not work anymore.
 
