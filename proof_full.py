@@ -60,15 +60,15 @@ for ib in range(B):
 
 #Build padded DMatrices
 D_pad = np.zeros((B,B,Npadding,3,3))
-for i1,b1 in enumerate(basis):
-    for i2,b2 in enumerate(basis):
+for ib1,b1 in enumerate(basis):
+    for ib2,b2 in enumerate(basis):
         for c in range(it_c):
             for b in range(it_b):
                 for a in range(it_a):
                     c_idx = c if c<N[2] else c - it_c
                     b_idx = b if b<N[1] else b - it_b
                     a_idx = a if a<N[0] else a - it_a 
-                    D_pad[i1, i2, a + it_a * b + it_a * it_b * c] = util.dipoleMatrix(a_idx * bv[0] + b_idx * bv[1] + c_idx * bv[2] + b1 - b2)
+                    D_pad[ib1, ib2, a + it_a * b + it_a * it_b * c] = util.dipoleMatrix(a_idx * bv[0] + b_idx * bv[1] + c_idx * bv[2] + b1 - b2)
 
 
 #----------------------------------------------------------------------
@@ -135,11 +135,25 @@ E_DDI_final = 0
 for i in range(B*N[0]*N[1]*N[2]):
     E_DDI_final += 0.5 * np.matmul(spins[i], res_final[i])
 
+#Compare deviation of gradients in (x,y,z)
+grad_deviation = np.std(res_final-gradBF, axis = (0))
+
 #------------------------------------------------------------------------
 # Write some results to file
 #------------------------------------------------------------------------
 
 with open(outputfile,"w") as f:
+    f.write( "\n#-------------------------------------\n")
+    f.write(   "#               Results               \n")
+    f.write(   "#-------------------------------------\n")
+    f.write("\n### Total Dipole-Dipole Energy ###\n\n")
+    f.write("Brute Force = "+str(E_DDI_BF) + "\n")
+    f.write("FFT algorithm = "+str(E_DDI_final) + "\n\n")
+    f.write("### Gradients ###\n\n")
+    f.write("Gradient deviation in (x,y,z) = " + str(grad_deviation) + "\n\n")
+    f.write("Brute Force Gradients: \n"+ str(gradBF) + "\n\n")
+    f.write("With convolution Theorem: \n")
+    f.write(str(res_final) + "\n\n")
 
     f.write( "#-------------------------------------\n")
     f.write( "#            Geometry                 \n")
@@ -161,23 +175,10 @@ with open(outputfile,"w") as f:
         for j in range(B):
             f.write("\nSublattice: {0}, {1}\n".format(i,j))
             f.write(str(D_pad[i,j]))
-    #f.write("Fourier Transformed padded magnetization: \n" + str(fmt)+ "\n")
-    #f.write("Fourier transformed padded D-Matrices \n" + str(fDt) + "\n")
-    
     f.write("\n#-------------------------------------\n")
     f.write(  "#            Direct Conv.             \n")
     f.write(  "#-------------------------------------\n")
     f.write("Convolution: \n"+ str(conv) + "\n")
-    f.write( "\n#-------------------------------------\n")
-    f.write(   "#               Results               \n")
-    f.write(   "#-------------------------------------\n")
-    f.write("Brute Force Gradients: \n"+ str(gradBF) + "\n")
-    f.write("With convolution Theorem: \n")
-    f.write(str(res_final))
-    f.write("\n\nTotal Dipole-Dipole Energy: \n")
-    f.write("Brute Force = "+str(E_DDI_BF) + "\n")
-    f.write("FFT algorithm = "+str(E_DDI_final) + "\n")
-
-    
+  
 
 
