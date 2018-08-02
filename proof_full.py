@@ -50,7 +50,7 @@ Npadding = it_a * it_b * it_c
 
 #Build padded magnetizations
 m_pad = []
-for ib,b in enumerate(basis):
+for ib in range(B):
     mt = np.zeros(3*Npadding).reshape((Npadding, 3))
     for c in range(N[2]):
         for b in range(N[1]):
