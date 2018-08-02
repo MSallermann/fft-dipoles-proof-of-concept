@@ -10,7 +10,7 @@ def setUpLattice(bv, N, basis = [[0, 0, 0]]):
                     result.append(bv[0] * a + bv[1] * b + bv[2] * c + base)
     return np.array(result)
 
-#builds spins on the lattice
+#builds spins on the lattice (lenght normalized to 1)
 def buildSpins(lattice, config = "Random"):
     if config == "Random":
         phi = np.random.rand(len(lattice))
@@ -34,9 +34,9 @@ def buildSpins(lattice, config = "Random"):
     result = np.dstack((x,y,z)).reshape(len(lattice), 3)
     return result
 
-#dipole matrix -> for r=0 return 0 matrix
+#dipole matrix -> for r=0 returns 0 matrix
 def dipoleMatrix(r_vect):
-    if r_vect[0]**2+r_vect[1]**2+r_vect[2]**2 > 1e-9:
+    if r_vect[0]**2+r_vect[1]**2+r_vect[2]**2 > 1e-10:
         x = r_vect[0]
         y = r_vect[1]
         z = r_vect[2]
@@ -56,13 +56,14 @@ def calculateGradientsBF(lattice, spins):
     for k in range(len(lattice)):
         grad = np.zeros(3)
         for j in range(len(lattice)):
-            if(j==k):
+            if(j==k): #skip self-interactions
                 continue
             D = dipoleMatrix(lattice[k]-lattice[j])
             grad += - np.matmul(D, spins[j])
         gradients[k] = grad
     return gradients
 
+#Brute Force the energy
 def calculateEnergyBF(lattice, spins):
     E = 0
     for i in range(len(lattice)):
@@ -80,7 +81,7 @@ def SC_vectors(lattice_constant=1):
                                             ]
                                      )
 
-#converts 3d numpy array to row-major 1D array
+#converts 3D numpy array to row-major 1D array
 def convertToNumpyStyle(x, N):
     new_shape = [N[2], N[1], N[0]]
     for i in range(1,len(x.shape)):
@@ -100,7 +101,7 @@ def convertToSpiritStyle(x):
     return result
 
 # sub is an array of row major 1D arrays where each 1D array represents a scalar \
-# quantity living on a differen sublattice
+# quantity living on a different sublattice
 # joinSublattices joins these into one single 1D array where the quantities on different
 # sublattices lie consecutively (spirit style)
 def joinSublattices(sub, N):

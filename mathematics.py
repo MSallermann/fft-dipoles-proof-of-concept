@@ -13,7 +13,9 @@ def convolute3DVecMatrix(D, s):
                             result[n,m,l] += temp
     return result
 
-#we dont use it, its just here to double check
+#----------------------------------------------------
+#   Everything below is not used in the full proof
+#----------------------------------------------------
 def four3d(x, dim , dir = 1):
     result = np.array([1.j for i in range(dim[0]*dim[1]* dim[2])])
     result = result.reshape(dim)
